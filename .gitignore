@@ -1,0 +1,22 @@
+# Python
+backend/venv/
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+
+# Environment Variables
+backend/.env
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Python cache
+*.pytest_cache/
+*.egg-info/
+
+# OS Files
+.DS_Store
+Thumbs.db
