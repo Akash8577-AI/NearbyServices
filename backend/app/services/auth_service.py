@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from app.models.role import UserRole
 
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
@@ -29,11 +30,12 @@ class AuthService:
 
         # Create user object
         new_user = User.create(
-            full_name=user.full_name,
-            email=user.email,
-            phone=user.phone,
-            hashed_password=hashed_password
-        )
+    full_name=user.full_name,
+    email=user.email,
+    phone=user.phone,
+    hashed_password=hashed_password,
+    role=UserRole.CUSTOMER
+)
 
         # Save to MongoDB
         user_id = await UserRepository.create(new_user)
@@ -69,7 +71,7 @@ class AuthService:
         # Create JWT Token
         access_token = create_access_token(
             {
-                "sub": db_user["email"]
+                "sub": str(db_user["email"])
             }
         )
 
