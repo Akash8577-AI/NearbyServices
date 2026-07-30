@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from app.api import category
 
 from fastapi import FastAPI
 
@@ -22,7 +23,15 @@ app = FastAPI(
 )
 
 # Include routers AFTER app is created
-app.include_router(auth_router)
+app.include_router(
+    auth_router,
+    prefix="/api/v1"
+)
+app.include_router(
+    category.router,
+    prefix="/api/v1"
+)
+
 
 
 @app.get("/")

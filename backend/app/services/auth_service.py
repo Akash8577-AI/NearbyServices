@@ -34,7 +34,7 @@ class AuthService:
     email=user.email,
     phone=user.phone,
     hashed_password=hashed_password,
-    role=UserRole.CUSTOMER
+    role=user.role
 )
 
         # Save to MongoDB
