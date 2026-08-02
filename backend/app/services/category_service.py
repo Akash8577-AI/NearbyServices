@@ -9,6 +9,7 @@ class CategoryService:
 
     @staticmethod
     async def create(category: CategoryCreate):
+        print(" CategoryService.create() started")
 
         # Check duplicate category
         existing_category = await CategoryRepository.get_by_name(
@@ -55,3 +56,44 @@ class CategoryService:
             )
 
         return category
+    @staticmethod
+    async def update(
+        category_id: str,
+        category: CategoryCreate
+    ):
+        existing_category = await CategoryRepository.get_by_id(
+            category_id
+        )
+
+        if not existing_category:
+            raise HTTPException(
+                status_code=404,
+                detail="Category not found"
+            )
+
+        duplicate = await CategoryRepository.get_by_name(
+            category.name
+        )
+
+        if (
+            duplicate
+            and str(duplicate["_id"]) != category_id
+        ):
+            raise HTTPException(
+                status_code=400,
+                detail="Category already exists"
+            )
+
+        updated_category = {
+            "name": category.name,
+            "description": category.description
+        }
+
+        await CategoryRepository.update(
+            category_id,
+            updated_category
+        )
+
+        return {
+            "message": "Category updated successfully"
+        }

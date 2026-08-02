@@ -40,3 +40,21 @@ class CategoryRepository:
         return await CategoryRepository.collection.find_one(
             {"name": name}
         )
+
+    @staticmethod
+    async def update(category_id: str, category: dict):
+        result = await CategoryRepository.collection.update_one(
+            {"_id": ObjectId(category_id)},
+            {"$set": category}
+        )
+
+        return result.modified_count
+
+    @staticmethod
+    async def delete(category_id: str):
+        result = await CategoryRepository.collection.delete_one(
+            {"_id": ObjectId(category_id)}
+        )
+
+        return result.deleted_count
+    
