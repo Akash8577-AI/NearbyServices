@@ -45,3 +45,15 @@ async def update_category(
         category_id,
         category
     )
+
+
+@router.delete("/{category_id}")
+async def delete_category(
+    category_id: str,
+    current_user=Depends(
+        require_roles(UserRole.ADMIN)
+    )
+):
+    return await CategoryService.delete(
+        category_id
+    )

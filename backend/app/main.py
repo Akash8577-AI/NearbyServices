@@ -1,11 +1,14 @@
 from contextlib import asynccontextmanager
 from app.api import category
+from app.api import service
+from app.api import provider
 
 from fastapi import FastAPI
 
 from app.core.config import settings
 from app.db.mongodb import client, db
 from app.api.auth import router as auth_router
+
 
 
 @asynccontextmanager
@@ -16,23 +19,14 @@ async def lifespan(app: FastAPI):
     print("❌ MongoDB Disconnected")
 
 
-app = FastAPI(
-    title=settings.APP_NAME,
-    version=settings.APP_VERSION,
-    lifespan=lifespan
-)
+app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION, lifespan=lifespan)
 
 # Include routers AFTER app is created
-app.include_router(
-    auth_router,
-    prefix="/api/v1"
-)
-app.include_router(
-    category.router,
-    prefix="/api/v1"
-)
-
-
+app.include_router(auth_router, prefix="/api/v1")
+app.include_router(category.router, prefix="/api/v1")
+app.include_router(service.router, prefix="/api/v1")
+app.include_router(provider.router, prefix="/api/v1")
+app.include_router(provider.router, prefix="/api/v1")
 
 @app.get("/")
 async def home():
@@ -48,12 +42,8 @@ async def health():
 async def db_check():
     try:
         await db.command("ping")
-        return {
-            "status": "success",
-            "message": "MongoDB Connected Successfully"
-        }
+        return {"status": "success", "message": "MongoDB Connected Successfully"}
     except Exception as e:
-        return {
-            "status": "failed",
-            "error": str(e)
-        }
+        return {"status": "failed", "error": str(e)}
+
+    app.include_router(service.router, prefix="/api/v1")

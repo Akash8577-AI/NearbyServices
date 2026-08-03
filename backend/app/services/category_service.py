@@ -97,3 +97,22 @@ class CategoryService:
         return {
             "message": "Category updated successfully"
         }
+
+    @staticmethod
+    async def delete(category_id: str):
+
+        existing_category = await CategoryRepository.get_by_id(
+            category_id
+        )
+
+        if not existing_category:
+            raise HTTPException(
+                status_code=404,
+                detail="Category not found"
+            )
+
+        await CategoryRepository.delete(category_id)
+
+        return {
+            "message": "Category deleted successfully"
+        }
