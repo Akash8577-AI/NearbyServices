@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from fastapi import Query
 
 from app.core.dependencies import require_roles
 from app.models.role import UserRole
@@ -27,6 +28,13 @@ async def create_service(
 @router.get("/")
 async def get_services():
     return await ServiceService.get_all()
+
+
+@router.get("/search")
+async def search_services(
+    name: str = Query(..., min_length=1)
+):
+    return await ServiceService.search(name)
 
 
 @router.get("/{service_id}")

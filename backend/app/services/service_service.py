@@ -74,6 +74,10 @@ class ServiceService:
         return service
 
     @staticmethod
+    async def search(name: str):
+        return await ServiceRepository.search_by_name(name)
+
+    @staticmethod
     async def update(
         service_id: str,
         service: ServiceUpdate
@@ -148,3 +152,4 @@ class ServiceService:
         return {
             "message": "Service deleted successfully"
         }
+        

@@ -69,3 +69,23 @@ class ServiceRepository:
         )
 
         return result.deleted_count
+
+    @staticmethod
+    async def search_by_name(name: str):
+        services = []
+
+        cursor = ServiceRepository.collection.find(
+            {
+                "name": {
+                    "$regex": name,
+                    "$options": "i"
+                }
+            }
+        )
+
+        async for service in cursor:
+            service["id"] = str(service["_id"])
+            del service["_id"]
+            services.append(service)
+
+        return services
