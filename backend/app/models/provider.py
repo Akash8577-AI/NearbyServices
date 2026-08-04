@@ -21,5 +21,7 @@ class Provider:
             "experience": experience,
             "address": address,
             "is_available": is_available,
+            "average_rating": 0,
+            "total_reviews": 0,
             "created_at": datetime.utcnow()
         }

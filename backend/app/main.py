@@ -2,12 +2,15 @@ from contextlib import asynccontextmanager
 from app.api import category
 from app.api import service
 from app.api import provider
+from app.api import booking
 
 from fastapi import FastAPI
 
 from app.core.config import settings
 from app.db.mongodb import client, db
 from app.api.auth import router as auth_router
+from app.api import review
+
 
 
 
@@ -27,6 +30,12 @@ app.include_router(category.router, prefix="/api/v1")
 app.include_router(service.router, prefix="/api/v1")
 app.include_router(provider.router, prefix="/api/v1")
 app.include_router(provider.router, prefix="/api/v1")
+app.include_router(
+    booking.router,
+    prefix="/api/v1"
+)
+app.include_router(review.router, prefix="/api/v1")
+
 
 @app.get("/")
 async def home():
